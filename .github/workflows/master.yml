@@ -15,7 +15,6 @@ jobs:
     - name: Tagname
       uses: olegtarasov/get-tag@v2
       id: tagName
-      run 
     - name: Archive Release
       uses: thedoctor0/zip-release@master
       with:
