@@ -18,7 +18,7 @@ jobs:
     - name: Archive Release
       uses: thedoctor0/zip-release@master
       with:
-        filename: piAgent-${GIT_TAG_NAME}.zip
+        filename: piAgent-${{ steps.tagName.outputs.tag }}.zip
         exclusions: '*.git* pics *.github'
     - name: Create Release
       id: create_release
