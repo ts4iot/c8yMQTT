@@ -19,7 +19,7 @@ jobs:
       uses: thedoctor0/zip-release@master
       with:
         filename: piAgent-${{ steps.tagName.outputs.tag }}.zip
-        exclusions: '*.git* *pics/* *.github'
+        exclusions: '*.git* pics *pics/*  *.github'
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
