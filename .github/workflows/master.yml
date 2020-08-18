@@ -3,7 +3,7 @@ name: Create Dev Release
 on: 
   push:
     tags:
-        - '*' # Push events to matching v*, i.e. v1.0, v20.15.10
+        - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,16 +14,16 @@ jobs:
     - name: Archive Release
       uses: thedoctor0/zip-release@master
       with:
-        filename: piAgent-${{ github.ref }}.zip
-        exclusions: '*.git* *pics* *.github'
+        filename: piAgent-${{GITHUB_REF:10}}.zip
+        exclusions: '*.git* pics *.github'
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name: ${{GITHUB_REF:10}}
+        release_name: Release ${{GITHUB_REF:10}}
         draft: false
         prerelease: false
     - name: Upload Release Asset
@@ -33,6 +33,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./piAgent-${{ github.ref }}.zip
-        asset_name: piAgent-${{ github.ref }}.zip
+        asset_path: ./piAgent-${{GITHUB_REF:10}}.zip
+        asset_name: piAgent-${{GITHUB_REF:10}}.zip
         asset_content_type: application/zip
