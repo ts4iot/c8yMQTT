@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: test
+        ref: releasetest
     - name: Archive Release
       uses: thedoctor0/zip-release@master
       with:
