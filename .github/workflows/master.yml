@@ -8,15 +8,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: checkout
+      uses: actions/checkout@v2
       with:
         ref: releasetest
-    - uses: olegtarasov/get-tag@v2
+    - name: Tagname
+      uses: olegtarasov/get-tag@v2
       id: tagName
+      run 
     - name: Archive Release
       uses: thedoctor0/zip-release@master
       with:
-        filename: piAgent-$GIT_TAG_NAME.zip
+        filename: piAgent-${GIT_TAG_NAME}.zip
         exclusions: '*.git* pics *.github'
     - name: Create Release
       id: create_release
@@ -24,8 +27,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${GITHUB_REF}
-        release_name: Release $GIT_TAG_NAME
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ steps.tagName.outputs.tag }}
         draft: false
         prerelease: false
     - name: Upload Release Asset
@@ -35,6 +38,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./piAgent-$GIT_TAG_NAME.zip
-        asset_name: piAgent-$GIT_TAG_NAME.zip
+        asset_path: ./piAgent-${{ steps.tagName.outputs.tag }}.zip
+        asset_name: piAgent-${{ steps.tagName.outputs.tag }}.zip
         asset_content_type: application/zip
